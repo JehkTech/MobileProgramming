@@ -1,0 +1,2160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TransitTrack — Project Masterplan</title>
+<style>
+  :root {
+    --primary: #1B4FD8;
+    --primary-light: #EEF2FF;
+    --primary-mid: #6366F1;
+    --teal: #0F766E;
+    --teal-light: #F0FDFA;
+    --amber: #B45309;
+    --amber-light: #FFFBEB;
+    --coral: #BE123C;
+    --coral-light: #FFF1F2;
+    --green: #15803D;
+    --green-light: #F0FDF4;
+    --purple: #7C3AED;
+    --purple-light: #F5F3FF;
+    --gray: #374151;
+    --gray-light: #F9FAFB;
+    --gray-mid: #6B7280;
+    --border: #E5E7EB;
+    --text: #111827;
+    --text-muted: #6B7280;
+    --bg: #FFFFFF;
+    --bg-secondary: #F9FAFB;
+    --radius: 12px;
+    --radius-sm: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-secondary);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .hero {
+    background: linear-gradient(135deg, #1B4FD8 0%, #4F46E5 50%, #7C3AED 100%);
+    color: white;
+    padding: 48px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 40%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero p {
+    font-size: 15px;
+    opacity: 0.85;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    opacity: 0.9;
+  }
+  .hero-meta-item .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+  }
+
+  /* ── Nav Tabs ── */
+  .nav-wrapper {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .nav-tabs {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 24px;
+    gap: 0;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 14px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+  .nav-tab:hover { color: var(--primary); }
+  .nav-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+  .nav-tab .tab-icon {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+  }
+
+  /* ── Content ── */
+  .content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── Agent Badge ── */
+  .agent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    margin-bottom: 20px;
+  }
+
+  /* ── Section Headers ── */
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .section-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ── Sprint Cards ── */
+  .sprint-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .sprint-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .sprint-header {
+    padding: 14px 18px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sprint-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .sprint-pts {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.06);
+  }
+  .sprint-title {
+    padding: 0 18px 12px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .sprint-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 18px;
+  }
+  .sprint-tasks {
+    padding: 12px 18px 16px;
+    list-style: none;
+  }
+  .sprint-tasks li {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    padding: 4px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+  }
+  .sprint-tasks li::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .sprint-goal {
+    padding: 10px 18px 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ── Priority Matrix ── */
+  .priority-matrix {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .matrix-cell {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .matrix-cell h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .matrix-cell ul { list-style: none; }
+  .matrix-cell li {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    padding: 3px 0;
+  }
+
+  /* ── Feature tags ── */
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    margin: 2px 2px 2px 0;
+  }
+  .tag-must { background: #FEE2E2; color: #B91C1C; }
+  .tag-should { background: #FEF3C7; color: #B45309; }
+  .tag-could { background: #D1FAE5; color: #065F46; }
+  .tag-wont { background: #F3F4F6; color: #6B7280; }
+
+  /* ── Timeline Bar ── */
+  .timeline {
+    display: flex;
+    gap: 4px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .timeline-item {
+    flex: 1;
+    min-width: 80px;
+    border-radius: 6px;
+    padding: 10px 12px;
+    position: relative;
+  }
+  .timeline-week {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.6;
+    margin-bottom: 4px;
+  }
+  .timeline-label {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  /* ── UX Personas ── */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .persona-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .persona-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .persona-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .persona-role {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .persona-needs { list-style: none; }
+  .persona-needs li {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    padding: 3px 0;
+    display: flex;
+    gap: 6px;
+  }
+  .persona-needs li::before { content: '→'; color: var(--primary); }
+  .pain-tag {
+    display: inline-block;
+    background: #FEF2F2;
+    color: #BE123C;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-right: 4px;
+  }
+
+  /* ── UI Components ── */
+  .screen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .screen-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .screen-preview {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+  }
+  .screen-info {
+    padding: 12px 14px;
+  }
+  .screen-info h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .screen-info p {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* ── Color Tokens ── */
+  .color-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .color-swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .color-dot {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .color-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  /* ── API Endpoints ── */
+  .endpoint-list { margin-bottom: 24px; }
+  .endpoint {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .endpoint-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .method-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    min-width: 42px;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+  .method-get { background: #D1FAE5; color: #065F46; }
+  .method-post { background: #DBEAFE; color: #1E40AF; }
+  .method-put { background: #FEF3C7; color: #92400E; }
+  .method-delete { background: #FEE2E2; color: #991B1B; }
+  .endpoint-path {
+    font-size: 13px;
+    font-family: 'SF Mono', Consolas, monospace;
+    color: var(--text);
+    flex: 1;
+  }
+  .endpoint-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .endpoint-body {
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+    display: none;
+  }
+  .endpoint-body.open { display: block; }
+  .endpoint-body code {
+    display: block;
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 11px;
+    background: #1F2937;
+    color: #E5E7EB;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    line-height: 1.5;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* ── DB Schema ── */
+  .schema-table {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .schema-table-header {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .schema-table-header .table-icon {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+  .schema-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .schema-table th {
+    text-align: left;
+    padding: 8px 16px;
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .schema-table td {
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .schema-table tr:last-child td { border-bottom: none; }
+  .field-name {
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: 500;
+  }
+  .field-type {
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 11.5px;
+    color: var(--teal);
+  }
+  .pk-badge {
+    background: #FEF3C7;
+    color: #B45309;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+  }
+  .fk-badge {
+    background: #EEF2FF;
+    color: #4338CA;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── Growth ── */
+  .funnel {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 500px;
+    margin: 0 auto 28px;
+  }
+  .funnel-stage {
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: opacity 0.2s;
+  }
+  .funnel-label {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .funnel-pct {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.75;
+  }
+
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .metric-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    text-align: center;
+  }
+  .metric-value {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .metric-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Tech Stack ── */
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .stack-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  .stack-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* ── Prototype ── */
+  .proto-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .proto-step {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .proto-step-num {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .proto-step h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .proto-step p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .proto-step .day-tag {
+    font-size: 11px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* ── Interview Questions ── */
+  .interview-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .interview-header {
+    padding: 14px 18px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .q-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .interview-body {
+    padding: 12px 18px 16px 52px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── Arch Diagram ── */
+  .arch-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .arch-layer {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .arch-node {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .arch-arrow {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 20px;
+    margin: 4px 0;
+  }
+
+  /* ── Responsive mock phones ── */
+  .phone-mockup {
+    width: 140px;
+    border: 2px solid #333;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #1a1a2e;
+    flex-shrink: 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .phone-top {
+    background: #333;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .phone-notch {
+    width: 40px; height: 8px;
+    background: #1a1a2e;
+    border-radius: 4px;
+  }
+  .phone-screen {
+    padding: 8px;
+    min-height: 240px;
+  }
+  .phone-bottom {
+    background: #333;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .phone-home {
+    width: 30px; height: 4px;
+    background: #1a1a2e;
+    border-radius: 2px;
+  }
+
+  /* Map screen elements */
+  .map-bg {
+    background: #2D3748;
+    border-radius: 4px;
+    height: 120px;
+    margin-bottom: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-road-h {
+    position: absolute;
+    height: 3px;
+    background: rgba(255,255,255,0.2);
+    left: 0; right: 0;
+  }
+  .map-road-v {
+    position: absolute;
+    width: 3px;
+    background: rgba(255,255,255,0.2);
+    top: 0; bottom: 0;
+  }
+  .map-bus {
+    position: absolute;
+    width: 10px; height: 10px;
+    background: #60A5FA;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+  .map-stop {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: #FCD34D;
+    border-radius: 50%;
+  }
+  .mini-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 5px 7px;
+    margin-bottom: 4px;
+  }
+  .mini-text {
+    color: rgba(255,255,255,0.85);
+    font-size: 8px;
+    display: block;
+  }
+  .mini-bold {
+    color: #60A5FA;
+    font-size: 9px;
+    font-weight: 700;
+    display: block;
+  }
+  .mini-green { color: #34D399; }
+  .mini-amber { color: #FCD34D; }
+
+  /* Scrollable container for phones */
+  .phones-container {
+    display: flex;
+    gap: 16px;
+    padding: 20px 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  /* ── Risk Table ── */
+  .risk-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .risk-table th {
+    text-align: left;
+    padding: 10px 16px;
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .risk-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .risk-hi { color: #B91C1C; background: #FEE2E2; border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 600; }
+  .risk-med { color: #B45309; background: #FEF3C7; border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 600; }
+  .risk-lo { color: #065F46; background: #D1FAE5; border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 600; }
+
+  /* ── Sticky overview ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .ov-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .ov-card .ov-icon {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .ov-card .ov-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .ov-card .ov-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ── Checklist ── */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .check-icon {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    color: white;
+  }
+
+  /* ── Info box ── */
+  .info-box {
+    border-left: 4px solid;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 32px 20px; }
+    .hero h1 { font-size: 24px; }
+    .content { padding: 20px 16px 48px; }
+    .nav-tab { padding: 12px 12px; font-size: 12px; }
+    .sprint-grid { grid-template-columns: 1fr; }
+    .priority-matrix { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">🚌 TRANSIT TRACK — PROJECT MASTERPLAN</div>
+  <h1>Real-Time Public Transport Tracking App</h1>
+  <p>A complete multi-agent development blueprint covering sprints, UX research, UI design, backend architecture, growth strategy, and rapid prototyping.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="dot"></div> 6 Weeks to MVP</div>
+    <div class="hero-meta-item"><div class="dot"></div> React Native + Node.js + PostgreSQL</div>
+    <div class="hero-meta-item"><div class="dot"></div> iOS & Android</div>
+    <div class="hero-meta-item"><div class="dot"></div> 6 Agents Coordinated</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrapper">
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showTab('overview')">
+      <div class="tab-icon" style="background:#EEF2FF;color:#4338CA">📋</div>Overview
+    </div>
+    <div class="nav-tab" onclick="showTab('sprints')">
+      <div class="tab-icon" style="background:#ECFDF5;color:#065F46">🏃</div>Sprints
+    </div>
+    <div class="nav-tab" onclick="showTab('ux')">
+      <div class="tab-icon" style="background:#FFF7ED;color:#C2410C">🔍</div>UX Research
+    </div>
+    <div class="nav-tab" onclick="showTab('ui')">
+      <div class="tab-icon" style="background:#F5F3FF;color:#6D28D9">🎨</div>UI Design
+    </div>
+    <div class="nav-tab" onclick="showTab('backend')">
+      <div class="tab-icon" style="background:#EFF6FF;color:#1D4ED8">⚙️</div>Backend
+    </div>
+    <div class="nav-tab" onclick="showTab('growth')">
+      <div class="tab-icon" style="background:#FFF1F2;color:#BE123C">📈</div>Growth
+    </div>
+    <div class="nav-tab" onclick="showTab('prototype')">
+      <div class="tab-icon" style="background:#F0FDF4;color:#15803D">⚡</div>Prototype
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- ════════════════════════════════════════════════ OVERVIEW ════════════════════════════════════════════════ -->
+<div class="section active" id="overview">
+  <div class="overview-grid">
+    <div class="ov-card">
+      <div class="ov-icon">🗓️</div>
+      <div class="ov-label">Total Timeline</div>
+      <div class="ov-value">6 Weeks</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">📱</div>
+      <div class="ov-label">Platforms</div>
+      <div class="ov-value">iOS + Android</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">👥</div>
+      <div class="ov-label">Target Users</div>
+      <div class="ov-value">Daily commuters</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">🎯</div>
+      <div class="ov-label">MVP Goal</div>
+      <div class="ov-value">Live bus tracking</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">🚀</div>
+      <div class="ov-label">Launch Target</div>
+      <div class="ov-value">Beta — Week 6</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">🔧</div>
+      <div class="ov-label">Core Tech</div>
+      <div class="ov-value">React Native</div>
+    </div>
+  </div>
+
+  <div class="section-title">The 6-Agent Coordination Map</div>
+  <div class="section-subtitle">Each agent runs concurrently across phases to maximise delivery velocity. Here's how they interlock.</div>
+
+  <div class="arch-box">
+    <div style="margin-bottom:14px;font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Phase 1 — Discovery & Design (Week 1–2)</div>
+    <div class="arch-layer">
+      <div class="arch-node" style="background:#EEF2FF;color:#4338CA;border:1px solid #C7D2FE">🔍 UX Researcher<br><span style="font-weight:400;font-size:11px">User interviews, personas</span></div>
+      <div class="arch-node" style="background:#F5F3FF;color:#6D28D9;border:1px solid #DDD6FE">🎨 UI Designer<br><span style="font-weight:400;font-size:11px">Design system, wireframes</span></div>
+      <div class="arch-node" style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE">⚙️ Backend Architect<br><span style="font-weight:400;font-size:11px">API & schema design</span></div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div style="margin-bottom:14px;margin-top:8px;font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Phase 2 — Build Fast (Week 2–4)</div>
+    <div class="arch-layer">
+      <div class="arch-node" style="background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0">🏃 Sprint Prioritizer<br><span style="font-weight:400;font-size:11px">Backlog management</span></div>
+      <div class="arch-node" style="background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0">⚡ Rapid Prototyper<br><span style="font-weight:400;font-size:11px">Working app in days</span></div>
+      <div class="arch-node" style="background:#FFF1F2;color:#BE123C;border:1px solid #FECDD3">📱 Mobile Builder<br><span style="font-weight:400;font-size:11px">iOS & Android dev</span></div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div style="margin-bottom:14px;margin-top:8px;font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Phase 3 — Launch & Grow (Week 5–6)</div>
+    <div class="arch-layer">
+      <div class="arch-node" style="background:#FFF7ED;color:#C2410C;border:1px solid #FED7AA">📈 Growth Hacker<br><span style="font-weight:400;font-size:11px">Launch strategy, virality</span></div>
+      <div class="arch-node" style="background:#EEF2FF;color:#4338CA;border:1px solid #C7D2FE">🔍 UX Researcher<br><span style="font-weight:400;font-size:11px">Usability tests, iteration</span></div>
+      <div class="arch-node" style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE">⚙️ Backend Architect<br><span style="font-weight:400;font-size:11px">Scaling, monitoring</span></div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px">Core Feature Scope</div>
+  <div class="section-subtitle">MoSCoW-prioritised features for the MVP and beyond.</div>
+
+  <div class="priority-matrix">
+    <div class="matrix-cell" style="border-top:3px solid #DC2626">
+      <h4 style="color:#DC2626">🔴 Must Have — MVP</h4>
+      <ul>
+        <li>📍 Live bus location on map</li>
+        <li>⏱ Arrival time estimates</li>
+        <li>🗺 Route viewer</li>
+        <li>🔔 Delay notifications</li>
+        <li>🛑 Stop search</li>
+      </ul>
+    </div>
+    <div class="matrix-cell" style="border-top:3px solid #D97706">
+      <h4 style="color:#D97706">🟡 Should Have — V1.1</h4>
+      <ul>
+        <li>🗓 Journey planner</li>
+        <li>💰 Fare estimator</li>
+        <li>⭐ Saved routes/stops</li>
+        <li>🌙 Offline schedule cache</li>
+        <li>🔄 Route changes alerts</li>
+      </ul>
+    </div>
+    <div class="matrix-cell" style="border-top:3px solid #059669">
+      <h4 style="color:#059669">🟢 Could Have — V2</h4>
+      <ul>
+        <li>🎟 In-app ticketing</li>
+        <li>♿ Accessibility info</li>
+        <li>🚌 Multi-modal (rail/tram)</li>
+        <li>👥 Crowding levels</li>
+        <li>🤖 AI journey advisor</li>
+      </ul>
+    </div>
+    <div class="matrix-cell" style="border-top:3px solid #9CA3AF">
+      <h4 style="color:#9CA3AF">⚪ Won't Have — Now</h4>
+      <ul>
+        <li>🚖 Ride hailing integration</li>
+        <li>📸 Augmented reality</li>
+        <li>🌍 Multi-city at launch</li>
+        <li>🗣 Social features</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box" style="background:#EFF6FF;border-color:#1D4ED8;color:#1E3A5F">
+    <strong>North Star Metric:</strong> Daily Active Users who check a bus arrival time (goal: 60% of installs return within 7 days). Every sprint decision should move this number.
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ SPRINTS ════════════════════════════════════════════════ -->
+<div class="section" id="sprints">
+  <div class="agent-badge" style="background:#ECFDF5;color:#065F46">🏃 Sprint Prioritizer Agent</div>
+  <div class="section-title">6-Week Sprint Plan</div>
+  <div class="section-subtitle">RICE-scored backlog broken into focused weekly sprints. Story points assume a 2-person dev team at 30 SP/week velocity.</div>
+
+  <!-- Timeline bar -->
+  <div class="timeline">
+    <div class="timeline-item" style="background:#EEF2FF;color:#4338CA">
+      <div class="timeline-week">Week 1</div>
+      <div class="timeline-label">Foundation</div>
+    </div>
+    <div class="timeline-item" style="background:#EFF6FF;color:#1D4ED8">
+      <div class="timeline-week">Week 2</div>
+      <div class="timeline-label">Core Tracking</div>
+    </div>
+    <div class="timeline-item" style="background:#ECFDF5;color:#065F46">
+      <div class="timeline-week">Week 3</div>
+      <div class="timeline-label">Real-Time</div>
+    </div>
+    <div class="timeline-item" style="background:#FFF7ED;color:#C2410C">
+      <div class="timeline-week">Week 4</div>
+      <div class="timeline-label">Notifications</div>
+    </div>
+    <div class="timeline-item" style="background:#F5F3FF;color:#6D28D9">
+      <div class="timeline-week">Week 5</div>
+      <div class="timeline-label">Polish</div>
+    </div>
+    <div class="timeline-item" style="background:#FFF1F2;color:#BE123C">
+      <div class="timeline-week">Week 6</div>
+      <div class="timeline-label">Beta Launch</div>
+    </div>
+  </div>
+
+  <div class="sprint-grid">
+
+    <!-- Sprint 1 -->
+    <div class="sprint-card">
+      <div class="sprint-header" style="background:#EEF2FF">
+        <div class="sprint-num" style="color:#4338CA">Sprint 1 — Week 1</div>
+        <div class="sprint-pts" style="background:#C7D2FE;color:#4338CA">28 SP</div>
+      </div>
+      <div class="sprint-title">🏗 Foundation & Setup</div>
+      <div class="sprint-divider"></div>
+      <ul class="sprint-tasks">
+        <li style="--c:#4338CA"><strong>Project bootstrap</strong> — React Native + Expo setup, CI/CD pipeline</li>
+        <li>Node.js API skeleton with auth middleware (JWT)</li>
+        <li>PostgreSQL schema: users, routes, stops, vehicles</li>
+        <li>Firebase push notification scaffolding</li>
+        <li>Map integration (react-native-maps + Mapbox)</li>
+        <li>Design system tokens implemented in-app</li>
+      </ul>
+      <div class="sprint-goal">Goal: Any dev can run the app on device and see a map screen.</div>
+    </div>
+
+    <!-- Sprint 2 -->
+    <div class="sprint-card">
+      <div class="sprint-header" style="background:#EFF6FF">
+        <div class="sprint-num" style="color:#1D4ED8">Sprint 2 — Week 2</div>
+        <div class="sprint-pts" style="background:#BFDBFE;color:#1D4ED8">32 SP</div>
+      </div>
+      <div class="sprint-title">🚌 Bus Tracking MVP</div>
+      <div class="sprint-divider"></div>
+      <ul class="sprint-tasks">
+        <li><strong>Bus location API</strong> — GTFS-RT feed parser & websocket emitter</li>
+        <li>Live bus markers on map with heading arrows</li>
+        <li>Stop search + autocomplete (Algolia or elastic)</li>
+        <li>ETA calculation engine (stop-based interpolation)</li>
+        <li>Route list screen + route detail screen</li>
+        <li>Offline fallback for schedule data</li>
+      </ul>
+      <div class="sprint-goal">Goal: User can search a stop and see the next 3 buses + ETAs.</div>
+    </div>
+
+    <!-- Sprint 3 -->
+    <div class="sprint-card">
+      <div class="sprint-header" style="background:#ECFDF5">
+        <div class="sprint-num" style="color:#065F46">Sprint 3 — Week 3</div>
+        <div class="sprint-pts" style="background:#A7F3D0;color:#065F46">30 SP</div>
+      </div>
+      <div class="sprint-title">⚡ Real-Time & Auth</div>
+      <div class="sprint-divider"></div>
+      <ul class="sprint-tasks">
+        <li><strong>WebSocket real-time</strong> — sub-5s vehicle position updates</li>
+        <li>User auth flows (register, login, Google SSO)</li>
+        <li>Save favourite stops & routes (persisted)</li>
+        <li>Journey planning UI (A → B with transfers)</li>
+        <li>Geolocation: "Stops Near Me" feature</li>
+        <li>Performance: 60fps map rendering audit</li>
+      </ul>
+      <div class="sprint-goal">Goal: Logged-in user can save favourites + plan a journey.</div>
+    </div>
+
+    <!-- Sprint 4 -->
+    <div class="sprint-card">
+      <div class="sprint-header" style="background:#FFF7ED">
+        <div class="sprint-num" style="color:#C2410C">Sprint 4 — Week 4</div>
+        <div class="sprint-pts" style="background:#FED7AA;color:#C2410C">29 SP</div>
+      </div>
+      <div class="sprint-title">🔔 Notifications & Fares</div>
+      <div class="sprint-divider"></div>
+      <ul class="sprint-tasks">
+        <li><strong>Smart alerts</strong> — "Bus leaving in 5 min" push notifications</li>
+        <li>Delay & cancellation push alerts</li>
+        <li>Fare estimation engine (zone-based)</li>
+        <li>Notification preferences screen</li>
+        <li>Analytics events instrumentation (Amplitude)</li>
+        <li>Deep link support for stops/routes</li>
+      </ul>
+      <div class="sprint-goal">Goal: User gets notified before their bus departs their saved stop.</div>
+    </div>
+
+    <!-- Sprint 5 -->
+    <div class="sprint-card">
+      <div class="sprint-header" style="background:#F5F3FF">
+        <div class="sprint-num" style="color:#6D28D9">Sprint 5 — Week 5</div>
+        <div class="sprint-pts" style="background:#DDD6FE;color:#6D28D9">26 SP</div>
+      </div>
+      <div class="sprint-title">✨ Polish & Performance</div>
+      <div class="sprint-divider"></div>
+      <ul class="sprint-tasks">
+        <li><strong>Usability test fixes</strong> — prioritise top 5 findings</li>
+        <li>App startup time &lt; 2s cold (bundle optimisation)</li>
+        <li>Skeleton screens & loading states everywhere</li>
+        <li>Onboarding flow (3 screens max)</li>
+        <li>Accessibility audit (screen reader labels, contrast)</li>
+        <li>Crash reporting (Sentry) + rate limiting</li>
+      </ul>
+      <div class="sprint-goal">Goal: Crash-free rate &gt; 99%, App Store screenshot-ready.</div>
+    </div>
+
+    <!-- Sprint 6 -->
+    <div class="sprint-card">
+      <div class="sprint-header" style="background:#FFF1F2">
+        <div class="sprint-num" style="color:#BE123C">Sprint 6 — Week 6</div>
+        <div class="sprint-pts" style="background:#FECDD3;color:#BE123C">20 SP</div>
+      </div>
+      <div class="sprint-title">🚀 Beta Launch</div>
+      <div class="sprint-divider"></div>
+      <ul class="sprint-tasks">
+        <li><strong>TestFlight + Google Play Internal</strong> release</li>
+        <li>App Store / Play Store metadata, screenshots</li>
+        <li>Referral "Share your stop" viral loop</li>
+        <li>Launch dashboard (live users, errors, ETA accuracy)</li>
+        <li>University / commuter group seeding campaign</li>
+        <li>Post-launch retrospective + V1.1 backlog</li>
+      </ul>
+      <div class="sprint-goal">Goal: 500 beta installs in Week 1, 40% D7 retention.</div>
+    </div>
+
+  </div>
+
+  <div class="info-box" style="background:#FFFBEB;border-color:#D97706;color:#78350F">
+    <strong>⚠️ Sprint Buffer Rule:</strong> 10% capacity buffer kept each sprint (≈3 SP). Never over-commit. Technical debt tracked separately — max 15% of sprint capacity at any point.
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#ECFDF5">📊</div>
+      <div><h3>Velocity Targets</h3><p>Key metrics to track sprint-to-sprint</p></div>
+    </div>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-value" style="color:#1D4ED8">90%</div>
+        <div class="metric-label">Sprint completion rate</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" style="color:#065F46">±10%</div>
+        <div class="metric-label">Velocity variance</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" style="color:#C2410C">&lt;15%</div>
+        <div class="metric-label">Tech debt cap</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" style="color:#6D28D9">95%</div>
+        <div class="metric-label">Deps resolved before sprint</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ UX RESEARCH ════════════════════════════════════════════════ -->
+<div class="section" id="ux">
+  <div class="agent-badge" style="background:#FFF7ED;color:#C2410C">🔍 UX Researcher Agent</div>
+  <div class="section-title">User Research Plan</div>
+  <div class="section-subtitle">Quick-sprint validation to confirm hypotheses before we build. 5-day research blitz, 8 interviews, 150-person survey.</div>
+
+  <div class="section-title" style="font-size:16px;margin-top:0">User Personas</div>
+
+  <div class="persona-grid">
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#EEF2FF">🎓</div>
+      <div class="persona-name">Alex, 21</div>
+      <div class="persona-role">University student, daily bus commuter</div>
+      <ul class="persona-needs">
+        <li>Know exactly when to leave home</li>
+        <li>Avoid waiting in the cold/rain</li>
+        <li>Plan routes to unfamiliar places</li>
+      </ul>
+      <span class="pain-tag">Uncertainty about arrival times</span>
+      <span class="pain-tag">Missing buses by 1 minute</span>
+    </div>
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#ECFDF5">👩‍💼</div>
+      <div class="persona-name">Sarah, 34</div>
+      <div class="persona-role">Office worker, peak-hour commuter</div>
+      <ul class="persona-needs">
+        <li>Reliable ETA to plan her morning</li>
+        <li>Alerts if her usual route is disrupted</li>
+        <li>Quick glance info, not complex UI</li>
+      </ul>
+      <span class="pain-tag">Late to meetings due to delays</span>
+      <span class="pain-tag">Too many apps to check</span>
+    </div>
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:#FFF7ED">🧑‍🦳</div>
+      <div class="persona-name">David, 58</div>
+      <div class="persona-role">Part-time worker, infrequent rider</div>
+      <ul class="persona-needs">
+        <li>Simple step-by-step journey guide</li>
+        <li>Large text, accessible design</li>
+        <li>Know if bus accepts contactless</li>
+      </ul>
+      <span class="pain-tag">Complex interfaces</span>
+      <span class="pain-tag">Not knowing which bus to take</span>
+    </div>
+  </div>
+
+  <div class="section-title" style="font-size:16px">Interview Guide — 8 Participant Script</div>
+  <div class="section-subtitle" style="margin-bottom:16px">Click each question to reveal what we're testing underneath it.</div>
+
+  <div id="interview-questions">
+    <div class="interview-card">
+      <div class="interview-header" onclick="toggleInterview(this)">
+        <div class="q-num" style="background:#EEF2FF;color:#4338CA">1</div>
+        <div style="flex:1;font-size:13px;font-weight:500">"Walk me through your last bus journey. What went wrong, if anything?"</div>
+        <div style="color:#9CA3AF;font-size:16px">+</div>
+      </div>
+      <div class="interview-body">
+        <strong>Testing:</strong> Real pain points unprompted. We're looking for: uncertainty language ("I wasn't sure if…"), timing failures ("I missed it by…"), workaround behaviours (calling friends, checking Google Maps instead). <em>Listen for spontaneous app comparisons.</em>
+      </div>
+    </div>
+    <div class="interview-card">
+      <div class="interview-header" onclick="toggleInterview(this)">
+        <div class="q-num" style="background:#EEF2FF;color:#4338CA">2</div>
+        <div style="flex:1;font-size:13px;font-weight:500">"Show me how you currently figure out when your bus is coming."</div>
+        <div style="color:#9CA3AF;font-size:16px">+</div>
+      </div>
+      <div class="interview-body">
+        <strong>Testing:</strong> Current tool ecosystem (competitor analysis). Note: do they use a transit app, Google Maps, a paper timetable, or nothing? How many taps does it take? Where do they drop off?
+      </div>
+    </div>
+    <div class="interview-card">
+      <div class="interview-header" onclick="toggleInterview(this)">
+        <div class="q-num" style="background:#EEF2FF;color:#4338CA">3</div>
+        <div style="flex:1;font-size:13px;font-weight:500">"If you could wave a magic wand and fix one thing about public transport, what would it be?"</div>
+        <div style="color:#9CA3AF;font-size:16px">+</div>
+      </div>
+      <div class="interview-body">
+        <strong>Testing:</strong> Aspirational needs vs. baseline needs. This surfaces whether users want <em>better information</em> (our product space) or infrastructural problems we can't solve. Redirects to "what if you knew the answer instantly?" if they say "more buses".
+      </div>
+    </div>
+    <div class="interview-card">
+      <div class="interview-header" onclick="toggleInterview(this)">
+        <div class="q-num" style="background:#EEF2FF;color:#4338CA">4</div>
+        <div style="flex:1;font-size:13px;font-weight:500">"How many minutes before a bus arrives do you head to the stop — and why that number?"</div>
+        <div style="color:#9CA3AF;font-size:16px">+</div>
+      </div>
+      <div class="interview-body">
+        <strong>Testing:</strong> Buffer time = anxiety proxy. Users who add 10+ minutes are the highest-anxiety segment, our primary early adopters. This also calibrates what notification timing means to users ("leaving in 5 min" vs "leaving in 10 min").
+      </div>
+    </div>
+    <div class="interview-card">
+      <div class="interview-header" onclick="toggleInterview(this)">
+        <div class="q-num" style="background:#EEF2FF;color:#4338CA">5</div>
+        <div style="flex:1;font-size:13px;font-weight:500">"Show me your phone — would you open an app or look at a notification to get a bus time?"</div>
+        <div style="color:#9CA3AF;font-size:16px">+</div>
+      </div>
+      <div class="interview-body">
+        <strong>Testing:</strong> Entry point preference. Validates whether push notification is the killer feature vs. in-app search. Also surfaces glanceability requirements — widget support may be needed earlier than planned.
+      </div>
+    </div>
+    <div class="interview-card">
+      <div class="interview-header" onclick="toggleInterview(this)">
+        <div class="q-num" style="background:#EEF2FF;color:#4338CA">6</div>
+        <div style="flex:1;font-size:13px;font-weight:500">"You're at the stop, the app says bus arrives in 8 minutes — but what if it doesn't?"</div>
+        <div style="color:#9CA3AF;font-size:16px">+</div>
+      </div>
+      <div class="interview-body">
+        <strong>Testing:</strong> Trust and accuracy expectations. Determines how we communicate uncertainty (confidence intervals vs. hard ETAs). Users who say "I'd never trust an app again" are churn risks if accuracy is below threshold — sets our ETA accuracy SLA.
+      </div>
+    </div>
+    <div class="interview-card">
+      <div class="interview-header" onclick="toggleInterview(this)">
+        <div class="q-num" style="background:#EEF2FF;color:#4338CA">7</div>
+        <div style="flex:1;font-size:13px;font-weight:500">"Would you pay £1.99/month for guaranteed accurate bus times? Why or why not?"</div>
+        <div style="color:#9CA3AF;font-size:16px">+</div>
+      </div>
+      <div class="interview-body">
+        <strong>Testing:</strong> Price sensitivity and willingness to pay. If &gt;60% say yes, premium freemium model is viable. Expect most to say "it should be free" — the growth hacker strategy accounts for this with a data monetisation model instead.
+      </div>
+    </div>
+    <div class="interview-card">
+      <div class="interview-header" onclick="toggleInterview(this)">
+        <div class="q-num" style="background:#EEF2FF;color:#4338CA">8</div>
+        <div style="flex:1;font-size:13px;font-weight:500">"If this app worked perfectly, who else do you know who'd want it?"</div>
+        <div style="color:#9CA3AF;font-size:16px">+</div>
+      </div>
+      <div class="interview-body">
+        <strong>Testing:</strong> Viral coefficient seed. Identifies natural sharing moments (sharing a stop link, recommending to family). Used to design the referral mechanic — "Share stop ETA with friends" feature originates from this question.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="font-size:16px;margin-top:28px">Key Hypotheses to Validate</div>
+
+  <div class="card" style="margin-bottom:12px">
+    <ul class="checklist">
+      <li><div class="check-icon" style="background:#DC2626">H1</div><div><strong>Primary frustration is uncertainty, not frequency</strong> — Users are bothered more by "not knowing when" than "buses are too infrequent"</div></li>
+      <li><div class="check-icon" style="background:#D97706">H2</div><div><strong>Push notifications are the killer feature</strong> — Users want to be told, not to look it up</div></li>
+      <li><div class="check-icon" style="background:#059669">H3</div><div><strong>Trust is binary</strong> — One wrong ETA erodes trust for weeks; accuracy matters more than features</div></li>
+      <li><div class="check-icon" style="background:#6D28D9">H4</div><div><strong>Map is secondary to ETAs</strong> — Most users want numbers, not visual bus locations</div></li>
+    </ul>
+  </div>
+
+  <div class="info-box" style="background:#F0FDF4;border-color:#15803D;color:#14532D">
+    <strong>Research Timeline:</strong> Day 1 — recruit & screener survey. Day 2–3 — 8× 30-min interviews. Day 4 — affinity mapping & findings synthesis. Day 5 — persona finalisation + design handoff. Results feed directly into Sprint 1 priorities.
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ UI DESIGN ════════════════════════════════════════════════ -->
+<div class="section" id="ui">
+  <div class="agent-badge" style="background:#F5F3FF;color:#6D28D9">🎨 UI Designer Agent</div>
+  <div class="section-title">Design System & Screen Specs</div>
+  <div class="section-subtitle">Component library, colour tokens, typography scale, and all 5 core screens in detail.</div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px">🎨 Colour Tokens</div>
+  <div class="color-row">
+    <div class="color-swatch"><div class="color-dot" style="background:#1B4FD8"></div><div class="color-label">Primary<br>#1B4FD8</div></div>
+    <div class="color-swatch"><div class="color-dot" style="background:#6366F1"></div><div class="color-label">Secondary<br>#6366F1</div></div>
+    <div class="color-swatch"><div class="color-dot" style="background:#10B981"></div><div class="color-label">Success<br>#10B981</div></div>
+    <div class="color-swatch"><div class="color-dot" style="background:#F59E0B"></div><div class="color-label">Warning<br>#F59E0B</div></div>
+    <div class="color-swatch"><div class="color-dot" style="background:#EF4444"></div><div class="color-label">Danger<br>#EF4444</div></div>
+    <div class="color-swatch"><div class="color-dot" style="background:#111827"></div><div class="color-label">Text Dark<br>#111827</div></div>
+    <div class="color-swatch"><div class="color-dot" style="background:#6B7280"></div><div class="color-label">Text Muted<br>#6B7280</div></div>
+    <div class="color-swatch"><div class="color-dot" style="background:#F9FAFB"></div><div class="color-label">BG Light<br>#F9FAFB</div></div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px;margin-top:8px">📐 Typography Scale</div>
+  <div class="card" style="padding:16px 20px">
+    <div style="display:grid;gap:8px">
+      <div style="display:flex;align-items:baseline;gap:12px"><span style="font-size:24px;font-weight:700;color:#111827">Page Title</span><span style="font-size:12px;color:#9CA3AF">24px / 700 / Letter −0.5px</span></div>
+      <div style="display:flex;align-items:baseline;gap:12px"><span style="font-size:18px;font-weight:600;color:#111827">Section Heading</span><span style="font-size:12px;color:#9CA3AF">18px / 600 / Letter 0</span></div>
+      <div style="display:flex;align-items:baseline;gap:12px"><span style="font-size:15px;font-weight:500;color:#111827">Card Title</span><span style="font-size:12px;color:#9CA3AF">15px / 500 / Letter 0</span></div>
+      <div style="display:flex;align-items:baseline;gap:12px"><span style="font-size:14px;color:#374151">Body text — clear and readable at all sizes</span><span style="font-size:12px;color:#9CA3AF">14px / 400 / LH 1.6</span></div>
+      <div style="display:flex;align-items:baseline;gap:12px"><span style="font-size:12px;color:#6B7280">Caption / Metadata label</span><span style="font-size:12px;color:#9CA3AF">12px / 400 / Muted</span></div>
+      <div style="display:flex;align-items:baseline;gap:12px"><span style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:#6B7280;text-transform:uppercase">OVERLINE TAG</span><span style="font-size:12px;color:#9CA3AF">11px / 700 / +0.5px / Upper</span></div>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px;margin-top:20px">📱 Core Screens (Phone Mockups)</div>
+
+  <div class="phones-container">
+
+    <!-- Screen 1: Map / Home -->
+    <div style="flex-shrink:0;width:150px">
+      <div class="phone-mockup">
+        <div class="phone-top"><div class="phone-notch"></div></div>
+        <div class="phone-screen" style="background:#0F172A;padding:6px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div style="color:rgba(255,255,255,0.6);font-size:7px">9:41</div>
+            <div style="color:#60A5FA;font-size:7px;font-weight:700">LIVE</div>
+          </div>
+          <div class="map-bg">
+            <div class="map-road-h" style="top:40%"></div>
+            <div class="map-road-h" style="top:70%"></div>
+            <div class="map-road-v" style="left:35%"></div>
+            <div class="map-road-v" style="left:65%"></div>
+            <div class="map-bus" style="top:32%;left:28%"></div>
+            <div class="map-bus" style="top:65%;left:60%" ></div>
+            <div class="map-stop" style="top:38%;left:34%"></div>
+            <div class="map-stop" style="top:67%;left:63%"></div>
+          </div>
+          <div class="mini-card">
+            <span class="mini-bold">Route 42A — City Centre</span>
+            <span class="mini-text mini-green">Arriving in 3 min</span>
+          </div>
+          <div class="mini-card">
+            <span class="mini-bold">Route 7 — University</span>
+            <span class="mini-text mini-amber">Arriving in 11 min</span>
+          </div>
+          <div style="display:flex;gap:4px;margin-top:6px">
+            <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:4px;padding:5px;text-align:center">
+              <div style="color:rgba(255,255,255,0.4);font-size:7px">MAP</div>
+            </div>
+            <div style="flex:1;background:#1B4FD8;border-radius:4px;padding:5px;text-align:center">
+              <div style="color:white;font-size:7px">NEARBY</div>
+            </div>
+            <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:4px;padding:5px;text-align:center">
+              <div style="color:rgba(255,255,255,0.4);font-size:7px">PLAN</div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-bottom"><div class="phone-home"></div></div>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:11.5px;font-weight:600">Home / Map</div>
+      <div style="text-align:center;font-size:10.5px;color:var(--text-muted)">Live tracking + ETA cards</div>
+    </div>
+
+    <!-- Screen 2: Stop Detail -->
+    <div style="flex-shrink:0;width:150px">
+      <div class="phone-mockup">
+        <div class="phone-top"><div class="phone-notch"></div></div>
+        <div class="phone-screen" style="background:#0F172A;padding:6px">
+          <div style="display:flex;align-items:center;gap:4px;margin-bottom:8px">
+            <div style="color:#60A5FA;font-size:10px">←</div>
+            <div style="color:white;font-size:8px;font-weight:600">High St / Market</div>
+          </div>
+          <div class="mini-card" style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <span style="background:#1B4FD8;color:white;font-size:8px;padding:1px 5px;border-radius:3px;font-weight:700">42A</span>
+              <span class="mini-text" style="margin-top:3px">City Centre</span>
+            </div>
+            <span style="color:#34D399;font-size:11px;font-weight:700">3′</span>
+          </div>
+          <div class="mini-card" style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <span style="background:#7C3AED;color:white;font-size:8px;padding:1px 5px;border-radius:3px;font-weight:700">7</span>
+              <span class="mini-text" style="margin-top:3px">University</span>
+            </div>
+            <span style="color:#FCD34D;font-size:11px;font-weight:700">11′</span>
+          </div>
+          <div class="mini-card" style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <span style="background:#0F766E;color:white;font-size:8px;padding:1px 5px;border-radius:3px;font-weight:700">15</span>
+              <span class="mini-text" style="margin-top:3px">Hospital</span>
+            </div>
+            <span style="color:rgba(255,255,255,0.4);font-size:11px;font-weight:700">24′</span>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:4px">
+            <div style="flex:1;background:#1B4FD8;border-radius:4px;padding:6px;text-align:center">
+              <div style="color:white;font-size:7px;font-weight:600">🔔 ALERT</div>
+            </div>
+            <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:4px;padding:6px;text-align:center">
+              <div style="color:rgba(255,255,255,0.6);font-size:7px">★ SAVE</div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-bottom"><div class="phone-home"></div></div>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:11.5px;font-weight:600">Stop Detail</div>
+      <div style="text-align:center;font-size:10.5px;color:var(--text-muted)">All buses at one stop</div>
+    </div>
+
+    <!-- Screen 3: Journey Planner -->
+    <div style="flex-shrink:0;width:150px">
+      <div class="phone-mockup">
+        <div class="phone-top"><div class="phone-notch"></div></div>
+        <div class="phone-screen" style="background:#0F172A;padding:6px">
+          <div style="color:white;font-size:8px;font-weight:600;margin-bottom:8px">Journey Planner</div>
+          <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:6px;margin-bottom:4px">
+            <div style="color:rgba(255,255,255,0.4);font-size:7px">FROM</div>
+            <div style="color:white;font-size:8px">My Location</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:6px;margin-bottom:8px">
+            <div style="color:rgba(255,255,255,0.4);font-size:7px">TO</div>
+            <div style="color:#60A5FA;font-size:8px">City Centre</div>
+          </div>
+          <div style="background:rgba(27,79,216,0.3);border:1px solid rgba(96,165,250,0.4);border-radius:4px;padding:7px;margin-bottom:5px">
+            <div style="display:flex;justify-content:space-between">
+              <span style="color:#60A5FA;font-size:8px;font-weight:700">42A → Walk</span>
+              <span style="color:white;font-size:8px">18 min</span>
+            </div>
+            <div style="color:rgba(255,255,255,0.5);font-size:7px;margin-top:2px">Dep 09:15 · £1.60</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border-radius:4px;padding:7px">
+            <div style="display:flex;justify-content:space-between">
+              <span style="color:rgba(255,255,255,0.7);font-size:8px">7 → 42</span>
+              <span style="color:rgba(255,255,255,0.7);font-size:8px">31 min</span>
+            </div>
+            <div style="color:rgba(255,255,255,0.4);font-size:7px;margin-top:2px">Dep 09:22 · £2.40</div>
+          </div>
+        </div>
+        <div class="phone-bottom"><div class="phone-home"></div></div>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:11.5px;font-weight:600">Journey Planner</div>
+      <div style="text-align:center;font-size:10.5px;color:var(--text-muted)">A→B with options & fares</div>
+    </div>
+
+    <!-- Screen 4: Notifications -->
+    <div style="flex-shrink:0;width:150px">
+      <div class="phone-mockup">
+        <div class="phone-top"><div class="phone-notch"></div></div>
+        <div class="phone-screen" style="background:#0F172A;padding:6px">
+          <div style="color:white;font-size:8px;font-weight:600;margin-bottom:8px">My Alerts</div>
+          <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:6px;padding:7px;margin-bottom:5px">
+            <div style="color:#34D399;font-size:7px;font-weight:700;margin-bottom:2px">ACTIVE ALERT</div>
+            <div style="color:white;font-size:8px">Route 42A · High St</div>
+            <div style="color:rgba(255,255,255,0.5);font-size:7px">Notify 5 min before</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border-radius:6px;padding:7px;margin-bottom:5px">
+            <div style="color:rgba(255,255,255,0.5);font-size:7px;font-weight:700;margin-bottom:2px">PAUSED</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:8px">Route 7 · Uni Campus</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:7px">Notify 8 min before</div>
+          </div>
+          <div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);border-radius:6px;padding:7px;margin-bottom:8px">
+            <div style="color:#FCA5A5;font-size:7px;font-weight:700;margin-bottom:2px">DELAY ALERT</div>
+            <div style="color:white;font-size:8px">Route 42A — 12 min late</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:7px">Now 09:27 (was 09:15)</div>
+          </div>
+          <div style="background:#1B4FD8;border-radius:4px;padding:6px;text-align:center">
+            <div style="color:white;font-size:7px;font-weight:600">+ ADD ALERT</div>
+          </div>
+        </div>
+        <div class="phone-bottom"><div class="phone-home"></div></div>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:11.5px;font-weight:600">My Alerts</div>
+      <div style="text-align:center;font-size:10.5px;color:var(--text-muted)">Smart push notifications</div>
+    </div>
+
+    <!-- Screen 5: Profile -->
+    <div style="flex-shrink:0;width:150px">
+      <div class="phone-mockup">
+        <div class="phone-top"><div class="phone-notch"></div></div>
+        <div class="phone-screen" style="background:#0F172A;padding:6px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+            <div style="width:28px;height:28px;background:#1B4FD8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:white;font-weight:700">AJ</div>
+            <div>
+              <div style="color:white;font-size:8px;font-weight:600">Alex J.</div>
+              <div style="color:#60A5FA;font-size:7px">42 journeys this month</div>
+            </div>
+          </div>
+          <div style="color:rgba(255,255,255,0.4);font-size:7px;font-weight:700;margin-bottom:5px">SAVED STOPS</div>
+          <div class="mini-card"><span class="mini-text">★ High St / Market</span></div>
+          <div class="mini-card"><span class="mini-text">★ University Gate</span></div>
+          <div style="color:rgba(255,255,255,0.4);font-size:7px;font-weight:700;margin:6px 0 4px">SETTINGS</div>
+          <div class="mini-card"><span class="mini-text">🔔 Notification timing</span></div>
+          <div class="mini-card"><span class="mini-text">🎨 Dark mode</span></div>
+          <div class="mini-card"><span class="mini-text">♿ Accessibility</span></div>
+        </div>
+        <div class="phone-bottom"><div class="phone-home"></div></div>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:11.5px;font-weight:600">Profile</div>
+      <div style="text-align:center;font-size:10.5px;color:var(--text-muted)">Saved stops & settings</div>
+    </div>
+
+  </div>
+
+  <div class="section-title" style="font-size:16px;margin-top:24px">Component Spec — ETA Card</div>
+  <div class="card">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Live component spec:</div>
+        <div style="background:#0F172A;border-radius:10px;padding:14px;max-width:280px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="background:#1B4FD8;color:white;font-size:11px;padding:3px 8px;border-radius:5px;font-weight:700">42A</div>
+              <div>
+                <div style="color:white;font-size:13px;font-weight:600">City Centre</div>
+                <div style="color:rgba(255,255,255,0.5);font-size:11px">via High Street</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="color:#34D399;font-size:20px;font-weight:800">3′</div>
+              <div style="color:rgba(255,255,255,0.35);font-size:10px">09:18</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;height:3px;background:rgba(255,255,255,0.08);border-radius:2px">
+            <div style="width:75%;height:100%;background:#1B4FD8;border-radius:2px;transition:width 1s"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px">
+            <div style="color:rgba(255,255,255,0.35);font-size:9px">Departed stop 3</div>
+            <div style="color:rgba(255,255,255,0.35);font-size:9px">2 stops away</div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1;min-width:180px;font-size:12.5px;color:var(--text-muted);line-height:1.7">
+        <strong style="color:var(--text);font-size:13px">Spec:</strong><br>
+        Height: 80px<br>
+        Corner radius: 12px<br>
+        Route badge: 28px × 22px, 700 weight<br>
+        ETA number: 20px, 800 weight, green if &lt;5min, amber 5–10min, white 10+<br>
+        Progress bar: 3px height, primary colour<br>
+        Touch target: full card, 48px min height<br>
+        Dark bg: #0F172A on #1B4FD8 text = 6.8:1 contrast ✓
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box" style="background:#F5F3FF;border-color:#7C3AED;color:#3B0764;margin-top:16px">
+    <strong>Accessibility mandate:</strong> All interactive elements min 44×44pt touch target. Colour contrast ≥ 4.5:1 (WCAG AA). ETA numbers must be readable at 200% text scale. Every bus icon has an accessible label for screen readers.
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ BACKEND ════════════════════════════════════════════════ -->
+<div class="section" id="backend">
+  <div class="agent-badge" style="background:#EFF6FF;color:#1D4ED8">⚙️ Backend Architect Agent</div>
+  <div class="section-title">API Design & Data Model</div>
+  <div class="section-subtitle">Production-grade architecture. Node.js + PostgreSQL + Redis + WebSockets. Designed for 99.9% uptime and &lt;200ms p95 response time.</div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px">🏗 System Architecture</div>
+  <div class="arch-box">
+    <div class="arch-layer">
+      <div class="arch-node" style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE;font-size:11px">React Native App<br><span style="font-weight:400">iOS / Android</span></div>
+    </div>
+    <div class="arch-arrow">↕ HTTPS + WSS</div>
+    <div class="arch-layer">
+      <div class="arch-node" style="background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;font-size:11px">API Gateway<br><span style="font-weight:400">Rate limiting, JWT auth</span></div>
+      <div class="arch-node" style="background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;font-size:11px">WebSocket Server<br><span style="font-weight:400">Real-time positions</span></div>
+    </div>
+    <div class="arch-arrow">↕</div>
+    <div class="arch-layer">
+      <div class="arch-node" style="background:#FFFBEB;color:#B45309;border:1px solid #FDE68A;font-size:11px">Core API<br><span style="font-weight:400">Routes, stops, ETAs</span></div>
+      <div class="arch-node" style="background:#FFFBEB;color:#B45309;border:1px solid #FDE68A;font-size:11px">GTFS Feed Processor<br><span style="font-weight:400">Every 10s</span></div>
+      <div class="arch-node" style="background:#FFFBEB;color:#B45309;border:1px solid #FDE68A;font-size:11px">Notification Worker<br><span style="font-weight:400">Firebase FCM / APNs</span></div>
+    </div>
+    <div class="arch-arrow">↕</div>
+    <div class="arch-layer">
+      <div class="arch-node" style="background:#F5F3FF;color:#6D28D9;border:1px solid #DDD6FE;font-size:11px">PostgreSQL<br><span style="font-weight:400">Persistent data</span></div>
+      <div class="arch-node" style="background:#F5F3FF;color:#6D28D9;border:1px solid #DDD6FE;font-size:11px">Redis<br><span style="font-weight:400">Live positions cache</span></div>
+      <div class="arch-node" style="background:#F5F3FF;color:#6D28D9;border:1px solid #DDD6FE;font-size:11px">S3 / Static<br><span style="font-weight:400">GTFS files, assets</span></div>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px;margin-top:20px">🔌 API Endpoints</div>
+  <div class="endpoint-list">
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggleEndpoint(this)">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/stops/nearby</span>
+        <span class="endpoint-desc">Stops within radius</span>
+      </div>
+      <div class="endpoint-body">
+        <strong>Query:</strong> <code>?lat=51.5074&lng=-0.1278&radius=500</code>
+        <strong style="display:block;margin-top:8px">Response:</strong>
+        <code>{
+  "data": [{
+    "id": "uuid",
+    "name": "High St / Market",
+    "lat": 51.5074, "lng": -0.1278,
+    "distance_m": 142,
+    "next_arrivals": [...]
+  }],
+  "meta": { "total": 5, "radius_m": 500 }
+}</code>
+        <div style="margin-top:8px;font-size:11px;color:#6B7280">⚡ Cached in Redis for 30s. Geospatial index on (lat, lng). P95 &lt;80ms.</div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggleEndpoint(this)">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/stops/:id/arrivals</span>
+        <span class="endpoint-desc">Next buses at stop</span>
+      </div>
+      <div class="endpoint-body">
+        <strong>Response:</strong>
+        <code>{
+  "data": [{
+    "route": "42A",
+    "destination": "City Centre",
+    "eta_seconds": 183,
+    "eta_display": "3 min",
+    "vehicle_id": "uuid",
+    "confidence": 0.92,
+    "is_realtime": true
+  }],
+  "meta": { "stop_id": "...", "generated_at": "ISO8601" }
+}</code>
+        <div style="margin-top:8px;font-size:11px;color:#6B7280">⚡ Real-time from GTFS-RT. Falls back to schedule if feed down. Confidence score drives UI colour (green/amber/red).</div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggleEndpoint(this)">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/vehicles/live</span>
+        <span class="endpoint-desc">All active bus positions</span>
+      </div>
+      <div class="endpoint-body">
+        <code>?bbox=51.48,-0.15,51.52,-0.10   // bounding box filter
+?route=42A                         // optional route filter</code>
+        <div style="margin-top:8px;font-size:11px;color:#6B7280">⚡ Reads directly from Redis ZSET geospatial index. Refreshed every 10s from GTFS-RT feed. 1000 vehicles max per response.</div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggleEndpoint(this)">
+        <span class="method-badge method-post">POST</span>
+        <span class="endpoint-path">/api/v1/alerts</span>
+        <span class="endpoint-desc">Create departure alert</span>
+      </div>
+      <div class="endpoint-body">
+        <strong>Body:</strong>
+        <code>{
+  "stop_id": "uuid",
+  "route_id": "uuid",
+  "notify_minutes_before": 5,
+  "days_of_week": [1,2,3,4,5]
+}</code>
+        <div style="margin-top:8px;font-size:11px;color:#6B7280">🔒 Requires auth. Stores alert, schedules background job. Max 10 alerts per user. Returns 201 with alert ID.</div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggleEndpoint(this)">
+        <span class="method-badge method-post">POST</span>
+        <span class="endpoint-path">/api/v1/journeys/plan</span>
+        <span class="endpoint-desc">Plan A→B journey</span>
+      </div>
+      <div class="endpoint-body">
+        <code>{
+  "origin": { "lat": 51.50, "lng": -0.13 },
+  "destination": { "lat": 51.52, "lng": -0.09 },
+  "depart_at": "ISO8601 | null (= now)"
+}</code>
+        <div style="margin-top:8px;font-size:11px;color:#6B7280">Uses modified Dijkstra on route graph. Returns up to 3 options sorted by duration. Includes walk segments, fare estimates.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px;margin-top:20px">🗄 Database Schema</div>
+
+  <div class="schema-table">
+    <div class="schema-table-header">
+      <div class="table-icon" style="background:#DBEAFE;color:#1D4ED8">🚌</div> vehicles
+      <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:auto">Live position log — partitioned by day</span>
+    </div>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td><span class="field-name">id</span> <span class="pk-badge">PK</span></td><td><span class="field-type">UUID</span></td><td>gen_random_uuid()</td></tr>
+      <tr><td><span class="field-name">gtfs_vehicle_id</span></td><td><span class="field-type">VARCHAR(50)</span></td><td>From GTFS-RT feed</td></tr>
+      <tr><td><span class="field-name">route_id</span> <span class="fk-badge">FK</span></td><td><span class="field-type">UUID</span></td><td>→ routes.id</td></tr>
+      <tr><td><span class="field-name">lat, lng</span></td><td><span class="field-type">DECIMAL(10,7)</span></td><td>Geospatial index on both</td></tr>
+      <tr><td><span class="field-name">heading</span></td><td><span class="field-type">SMALLINT</span></td><td>0–359 degrees</td></tr>
+      <tr><td><span class="field-name">recorded_at</span></td><td><span class="field-type">TIMESTAMPTZ</span></td><td>Partition key — INDEX</td></tr>
+    </table>
+  </div>
+
+  <div class="schema-table">
+    <div class="schema-table-header">
+      <div class="table-icon" style="background:#D1FAE5;color:#065F46">🛑</div> stops
+    </div>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td><span class="field-name">id</span> <span class="pk-badge">PK</span></td><td><span class="field-type">UUID</span></td><td></td></tr>
+      <tr><td><span class="field-name">name</span></td><td><span class="field-type">VARCHAR(255)</span></td><td>GIN full-text index for search</td></tr>
+      <tr><td><span class="field-name">lat, lng</span></td><td><span class="field-type">DECIMAL(10,7)</span></td><td>PostGIS GEOGRAPHY(Point)</td></tr>
+      <tr><td><span class="field-name">accessibility</span></td><td><span class="field-type">JSONB</span></td><td>{ramp, shelter, realtime_display}</td></tr>
+    </table>
+  </div>
+
+  <div class="schema-table">
+    <div class="schema-table-header">
+      <div class="table-icon" style="background:#FDE68A;color:#B45309">👤</div> user_alerts
+    </div>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td><span class="field-name">id</span> <span class="pk-badge">PK</span></td><td><span class="field-type">UUID</span></td><td></td></tr>
+      <tr><td><span class="field-name">user_id</span> <span class="fk-badge">FK</span></td><td><span class="field-type">UUID</span></td><td>ON DELETE CASCADE</td></tr>
+      <tr><td><span class="field-name">stop_id, route_id</span> <span class="fk-badge">FK</span></td><td><span class="field-type">UUID</span></td><td>INDEX on both</td></tr>
+      <tr><td><span class="field-name">notify_minutes</span></td><td><span class="field-type">SMALLINT</span></td><td>CHECK 1–60</td></tr>
+      <tr><td><span class="field-name">days_of_week</span></td><td><span class="field-type">SMALLINT[]</span></td><td>[0–6] ISO weekday</td></tr>
+      <tr><td><span class="field-name">is_active</span></td><td><span class="field-type">BOOLEAN</span></td><td>DEFAULT true</td></tr>
+    </table>
+  </div>
+
+  <div class="info-box" style="background:#FFF1F2;border-color:#BE123C;color:#881337;margin-top:4px">
+    <strong>Security non-negotiables:</strong> All endpoints behind JWT auth. Rate limit: 100 req/min per IP, 500/min per user token. Input sanitisation via Zod schemas. Secrets in AWS Secrets Manager (never .env in CI). AES-256 at rest, TLS 1.3 in transit. Audit log on all alert mutations.
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ GROWTH ════════════════════════════════════════════════ -->
+<div class="section" id="growth">
+  <div class="agent-badge" style="background:#FFF7ED;color:#C2410C">📈 Growth Hacker Agent</div>
+  <div class="section-title">Launch Strategy & Growth Engine</div>
+  <div class="section-subtitle">Viral loop design, acquisition channels, and conversion funnel optimised for a transport utility app targeting commuter communities.</div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px">🎯 North Star & Growth Model</div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-value" style="color:#1D4ED8">DAU</div>
+      <div class="metric-label">North Star Metric</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value" style="color:#059669">&gt;1.0</div>
+      <div class="metric-label">K-factor target</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value" style="color:#C2410C">40%</div>
+      <div class="metric-label">D7 retention goal</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value" style="color:#7C3AED">&lt;6mo</div>
+      <div class="metric-label">CAC payback target</div>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px">📉 Acquisition Funnel</div>
+
+  <div class="funnel">
+    <div class="funnel-stage" style="background:#DBEAFE;margin:0 0px">
+      <div class="funnel-label" style="color:#1E40AF">🌐 Awareness — 10,000 impressions</div>
+      <div class="funnel-pct" style="color:#3B82F6">100%</div>
+    </div>
+    <div class="funnel-stage" style="background:#C7D2FE;margin:0 20px">
+      <div class="funnel-label" style="color:#3730A3">📲 App Store Visit — 1,500</div>
+      <div class="funnel-pct" style="color:#4F46E5">15%</div>
+    </div>
+    <div class="funnel-stage" style="background:#A5B4FC;margin:0 40px">
+      <div class="funnel-label" style="color:#312E81">⬇️ Install — 600</div>
+      <div class="funnel-pct" style="color:#4338CA">40%</div>
+    </div>
+    <div class="funnel-stage" style="background:#818CF8;margin:0 60px">
+      <div class="funnel-label" style="color:#ffffff">✅ First check bus time — 420</div>
+      <div class="funnel-pct" style="color:rgba(255,255,255,0.8)">70%</div>
+    </div>
+    <div class="funnel-stage" style="background:#6366F1;margin:0 80px">
+      <div class="funnel-label" style="color:#ffffff">🔔 Enable notifications — 252</div>
+      <div class="funnel-pct" style="color:rgba(255,255,255,0.8)">60%</div>
+    </div>
+    <div class="funnel-stage" style="background:#4F46E5;margin:0 100px">
+      <div class="funnel-label" style="color:#ffffff">📅 Day 7 retention — 168</div>
+      <div class="funnel-pct" style="color:rgba(255,255,255,0.8)">40%</div>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px;margin-top:4px">🔄 Viral Loop Design</div>
+  <div class="card" style="margin-bottom:16px">
+    <div style="font-size:13px;line-height:1.8;color:var(--text-muted)">
+      The core viral mechanic: <strong style="color:var(--text)">Share a Stop Link.</strong><br><br>
+      When a user checks a stop's live arrivals, they can tap "Share" to send a pre-formatted link (<code style="font-size:12px">transittrack.app/stop/high-st?route=42A</code>) to a friend via WhatsApp, iMessage, or Instagram Stories.<br><br>
+      The shared link opens a <strong style="color:var(--text)">beautiful web preview</strong> of live arrivals at that stop — with a download prompt. This is the most natural sharing moment ("running late, check if the bus is coming").<br><br>
+      <strong style="color:var(--text)">K-factor target:</strong> If each user shares once per week and converts 0.3 installs, K = 0.3 per sharing event. Compounding over 4 weeks = ~1.2× base growth. Aim to improve this to K &gt; 1.0 with incentivised referrals.
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px">🚀 Launch Sequence (Week 6)</div>
+
+  <div class="proto-steps">
+    <div class="proto-step" style="border-top:3px solid #1D4ED8">
+      <span class="day-tag">Day 1</span>
+      <div class="proto-step-num" style="color:#1D4ED8">1</div>
+      <h4>University Seed</h4>
+      <p>Post in 5 student Facebook groups + Reddit r/[city]. Free value: "see every bus near campus live". Target: 200 installs.</p>
+    </div>
+    <div class="proto-step" style="border-top:3px solid #059669">
+      <span class="day-tag">Day 2–3</span>
+      <div class="proto-step-num" style="color:#059669">2</div>
+      <h4>Commuter Communities</h4>
+      <p>Target local NextDoor, commuter Slack groups, LinkedIn local transport groups. Offer early-access badge.</p>
+    </div>
+    <div class="proto-step" style="border-top:3px solid #7C3AED">
+      <span class="day-tag">Day 4</span>
+      <div class="proto-step-num" style="color:#7C3AED">3</div>
+      <h4>PR & Local Press</h4>
+      <p>Email local news editor with data story: "we analysed 10,000 bus times in [city] — here's the most unreliable routes". App as the tool.</p>
+    </div>
+    <div class="proto-step" style="border-top:3px solid #C2410C">
+      <span class="day-tag">Day 5–7</span>
+      <div class="proto-step-num" style="color:#C2410C">4</div>
+      <h4>Referral Activation</h4>
+      <p>In-app "Give your commuter friend accurate bus times" — share your referral link, both users unlock "Priority Alerts" for a month.</p>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px">🧪 A/B Tests Queue — Sprint 5</div>
+  <table class="risk-table">
+    <tr><th>Test</th><th>Variant A</th><th>Variant B</th><th>Success Metric</th></tr>
+    <tr><td><strong>Onboarding step 1</strong></td><td>"Allow Notifications" first</td><td>Show map first, then ask</td><td>Notification opt-in rate</td></tr>
+    <tr><td><strong>ETA display</strong></td><td>"3 min" countdown</td><td>"09:18" clock time</td><td>D7 retention</td></tr>
+    <tr><td><strong>Share CTA copy</strong></td><td>"Share this stop"</td><td>"Tell a friend the bus time"</td><td>Share tap rate</td></tr>
+    <tr><td><strong>Notification timing</strong></td><td>5 min before</td><td>8 min before</td><td>Open rate + satisfaction</td></tr>
+  </table>
+
+  <div class="info-box" style="background:#ECFDF5;border-color:#059669;color:#14532D">
+    <strong>Business Model:</strong> Free tier forever (core tracking). Premium £1.99/month unlocks: unlimited saved alerts, journey planner, fare estimates, widget support. Revenue also from anonymised aggregate transit data licensed to urban planners and councils (GDPR-compliant, never individual data).
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ PROTOTYPE ════════════════════════════════════════════════ -->
+<div class="section" id="prototype">
+  <div class="agent-badge" style="background:#F0FDF4;color:#15803D">⚡ Rapid Prototyper Agent</div>
+  <div class="section-title">Get the First Version Running Fast</div>
+  <div class="section-subtitle">Day-by-day plan to have a working, testable prototype in 4 days using the fastest available stack. Validate before you build the full thing.</div>
+
+  <div class="info-box" style="background:#FFFBEB;border-color:#D97706;color:#78350F">
+    <strong>Core Hypothesis Being Tested:</strong> "Users will check the app daily if it reliably shows them when their bus is coming." Success = 60% of testers open the app again within 24 hours of first use.
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px;margin-top:4px">⚡ 4-Day Prototype Sprint</div>
+
+  <div class="proto-steps">
+    <div class="proto-step" style="border-top:3px solid #1D4ED8">
+      <span class="day-tag">Day 1 AM</span>
+      <div class="proto-step-num" style="color:#1D4ED8">D1</div>
+      <h4>Stack Setup</h4>
+      <p>Expo + React Native init. Supabase project (auth + DB). Mapbox API key. Firebase project for push. CI on EAS Build.</p>
+    </div>
+    <div class="proto-step" style="border-top:3px solid #7C3AED">
+      <span class="day-tag">Day 1 PM</span>
+      <div class="proto-step-num" style="color:#7C3AED">D1</div>
+      <h4>Static Data Layer</h4>
+      <p>Import 1 city's GTFS static feed into Supabase. Seed 50 stops, 10 routes. Build stop search API (PostgREST).</p>
+    </div>
+    <div class="proto-step" style="border-top:3px solid #059669">
+      <span class="day-tag">Day 2</span>
+      <div class="proto-step-num" style="color:#059669">D2</div>
+      <h4>Core UI + Mock Live</h4>
+      <p>Map screen with stop markers. Tap stop → ETA card sheet. ETAs mocked with ±2min randomness. Notification scaffold.</p>
+    </div>
+    <div class="proto-step" style="border-top:3px solid #C2410C">
+      <span class="day-tag">Day 3</span>
+      <div class="proto-step-num" style="color:#C2410C">D3</div>
+      <h4>Real GTFS-RT</h4>
+      <p>Connect to city's GTFS-RT feed (or TfL API). Parse vehicle positions into Redis. WebSocket push to app. Real ETAs!</p>
+    </div>
+    <div class="proto-step" style="border-top:3px solid #D97706">
+      <span class="day-tag">Day 4</span>
+      <div class="proto-step-num" style="color:#D97706">D4</div>
+      <h4>Test & Instrument</h4>
+      <p>Amplitude analytics: stop_viewed, eta_checked, notification_enabled. TestFlight build. 10 testers. Collect feedback.</p>
+    </div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px">🛠 Prototype Tech Stack</div>
+  <div class="stack-row">
+    <div class="stack-chip"><div class="stack-dot" style="background:#61DAFB"></div>React Native + Expo</div>
+    <div class="stack-chip"><div class="stack-dot" style="background:#3ECF8E"></div>Supabase (DB + Auth)</div>
+    <div class="stack-chip"><div class="stack-dot" style="background:#4353FF"></div>Mapbox</div>
+    <div class="stack-chip"><div class="stack-dot" style="background:#FFA611"></div>Firebase FCM</div>
+    <div class="stack-chip"><div class="stack-dot" style="background:#DC382D"></div>Redis Cloud (free tier)</div>
+    <div class="stack-chip"><div class="stack-dot" style="background:#3178C6"></div>TypeScript</div>
+    <div class="stack-chip"><div class="stack-dot" style="background:#2D3748"></div>PostgREST API</div>
+    <div class="stack-chip"><div class="stack-dot" style="background:#FD7E14"></div>Amplitude Analytics</div>
+  </div>
+
+  <div style="font-size:14px;font-weight:600;margin-bottom:12px;margin-top:8px">📊 Validation Criteria</div>
+  <div class="card">
+    <ul class="checklist">
+      <li><div class="check-icon" style="background:#059669">✓</div><div><strong>Hypothesis valid if:</strong> 6/10 testers open app again next day</div></li>
+      <li><div class="check-icon" style="background:#059669">✓</div><div><strong>ETA accuracy:</strong> &lt;90s error on 80% of predictions</div></li>
+      <li><div class="check-icon" style="background:#059669">✓</div><div><strong>Performance:</strong> Map loads within 2s on 4G</div></li>
+      <li><div class="check-icon" style="background:#D97706">?</div><div><strong>Pivots if:</strong> &lt;3/10 return — reconsider notification mechanic vs. home screen widget</div></li>
+      <li><div class="check-icon" style="background:#D97706">?</div><div><strong>Pivots if:</strong> Users say "I just use Google Maps" — need to identify our differentiator (better local data? Offline schedule cache?)</div></li>
+      <li><div class="check-icon" style="background:#DC2626">✗</div><div><strong>Kill criteria:</strong> GTFS-RT feed for target city is unavailable or inaccurate — evaluate alternative data sources before full build</div></li>
+    </ul>
+  </div>
+
+  <div class="section-title" style="font-size:16px;margin-top:20px">🔄 Prototype → Production Transition</div>
+  <div class="card">
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.8">
+      When prototype validates (DAY 4 test passes):
+      <br>• Supabase → self-hosted PostgreSQL on RDS (production schema from backend architect plan)
+      <br>• PostgREST → custom Express.js API with auth, rate limiting, full error handling
+      <br>• Redis Cloud free → ElastiCache cluster with failover
+      <br>• Expo Go → EAS standalone build with code signing
+      <br>• Mock analytics → production Amplitude with full funnel tracking
+      <br><br>Estimated transition time: <strong style="color:var(--text)">3–4 days</strong> with existing code as the UI foundation.
+    </div>
+  </div>
+
+  <div class="info-box" style="background:#EFF6FF;border-color:#1D4ED8;color:#1E3A5F;margin-top:4px">
+    <strong>Rapid Prototyper Rule:</strong> Never spend more than 4 hours on something that hasn't been validated. The map and ETA cards are the product — everything else (onboarding, settings, profile) ships as the bare minimum needed to test the core hypothesis.
+  </div>
+</div>
+
+</div><!-- end .content -->
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function toggleEndpoint(el) {
+  const body = el.nextElementSibling;
+  const arrow = el.querySelector('.endpoint-desc');
+  if (body.classList.contains('open')) {
+    body.classList.remove('open');
+  } else {
+    document.querySelectorAll('.endpoint-body.open').forEach(b => b.classList.remove('open'));
+    body.classList.add('open');
+  }
+}
+
+function toggleInterview(el) {
+  const body = el.nextElementSibling;
+  const plus = el.querySelector('div:last-child');
+  if (body.style.display === 'block') {
+    body.style.display = 'none';
+    plus.textContent = '+';
+  } else {
+    body.style.display = 'block';
+    plus.textContent = '−';
+  }
+}
+</script>
+
+</body>
+</html>
