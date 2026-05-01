@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { colors, spacing, radius } from '../theme';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { ActionButton, EtaCard, Pill, ScreenScroll, SectionHeader, SurfaceCard } from '../components/designSystem';
+import { colors, spacing, radius, typography } from '../theme';
 import { requestNotificationPermissions, scheduleStopAlert } from '../services/notifications';
 
 export default function StopDetailScreen({ navigation, route }) {
@@ -22,145 +23,140 @@ export default function StopDetailScreen({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.backButtonText}>{'< Back'}</Text>
-        </TouchableOpacity>
-        <Text style={styles.stopName}>{stopName}</Text>
-      </View>
-
-      <View style={styles.busList}>
-        <View style={styles.busItem}>
-          <View style={styles.busInfo}>
-            <Text style={styles.routeBadge}>42A</Text>
-            <View>
-              <Text style={styles.destination}>City Centre</Text>
-              <Text style={styles.eta}>3 min</Text>
-            </View>
-          </View>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => handleAlert(3)}
-          >
-            <Text style={styles.actionText}>ALERT</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.busItem}>
-          <View style={styles.busInfo}>
-            <Text style={styles.routeBadge}>7</Text>
-            <View>
-              <Text style={styles.destination}>University</Text>
-              <Text style={styles.eta}>11 min</Text>
-            </View>
-          </View>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => handleAlert(11)}
-          >
-            <Text style={styles.actionText}>ALERT</Text>
-          </TouchableOpacity>
+    <ScreenScroll contentContainerStyle={styles.content}>
+      <View style={styles.hero}>
+        <ActionButton label="Back" variant="ghost" icon="chevron-back-outline" onPress={() => navigation.goBack()} />
+        <View style={styles.heroCopy}>
+          <Pill label="STOP DETAIL" tone="primary" icon="location-outline" />
+          <Text style={styles.stopName}>{stopName}</Text>
+          <Text style={styles.heroText}>All buses at one stop with fast alert actions and a compact, readable layout.</Text>
         </View>
       </View>
 
-      <View style={styles.bottomActions}>
-        <TouchableOpacity style={styles.actionButtonFull}>
-          <Text style={styles.actionTextFull}>SAVE STOP</Text>
-        </TouchableOpacity>
+      <SurfaceCard style={styles.summaryCard}>
+        <View style={styles.summaryRow}>
+          <View style={styles.summaryBlock}>
+            <Text style={styles.summaryLabel}>Platform</Text>
+            <Text style={styles.summaryValue}>3 bays</Text>
+          </View>
+          <View style={styles.summaryBlock}>
+            <Text style={styles.summaryLabel}>Saved</Text>
+            <Text style={styles.summaryValue}>Yes</Text>
+          </View>
+          <View style={styles.summaryBlock}>
+            <Text style={styles.summaryLabel}>Alerts</Text>
+            <Text style={styles.summaryValue}>On</Text>
+          </View>
+        </View>
+        <View style={styles.summaryActions}>
+          <ActionButton label="Alert" variant="primary" icon="alarm-outline" onPress={() => handleAlert(3)} />
+          <ActionButton label="Save stop" variant="ghost" icon="heart-outline" />
+        </View>
+      </SurfaceCard>
+
+      <SectionHeader title="Departures" subtitle="The ETA card mirrors the production spec." />
+      <View style={styles.etaList}>
+        <EtaCard
+          route="42A"
+          destination="City Centre"
+          via="via High Street"
+          minutes={3}
+          note="Departed stop 3"
+          progress={0.78}
+          onPress={() => handleAlert(3)}
+        />
+        <EtaCard
+          route="7"
+          destination="University"
+          via="via Market"
+          minutes={11}
+          note="2 stops away"
+          progress={0.44}
+          onPress={() => handleAlert(11)}
+        />
+        <EtaCard
+          route="15"
+          destination="Hospital"
+          via="via North Gate"
+          minutes={24}
+          note="Scheduled departure"
+          progress={0.22}
+        />
       </View>
-    </View>
+
+      <SectionHeader title="Stop details" subtitle="An accessible summary card with the key metadata." />
+      <SurfaceCard style={styles.detailCard}>
+        <Text style={styles.detailTitle}>High priority service</Text>
+        <Text style={styles.detailText}>
+          Choose this stop when you want a single place to inspect routes, arm notifications, and store the location for later.
+        </Text>
+      </SurfaceCard>
+    </ScreenScroll>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bgSecondary,
+  content: {
+    paddingHorizontal: spacing.screen,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.xxxl,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: spacing.md,
-    backgroundColor: colors.bg,
-    borderBottomWidth: 1,
-    borderColor: colors.border,
+  hero: {
+    marginBottom: spacing.lg,
   },
-  backButton: {
-    marginRight: spacing.sm,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: colors.text,
-    fontWeight: '600',
+  heroCopy: {
+    marginTop: spacing.md,
   },
   stopName: {
-    flex: 1,
-    fontSize: 20,
-    fontWeight: '600',
-    color: colors.text,
+    ...typography.pageTitle,
+    color: colors.textDark,
+    marginTop: spacing.sm,
   },
-  busList: {
-    flex: 1,
+  heroText: {
+    marginTop: spacing.xs,
+    ...typography.body,
+    color: colors.textMuted,
   },
-  busItem: {
+  summaryCard: {
+    gap: spacing.md,
+  },
+  summaryRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: spacing.md,
-    backgroundColor: colors.bg,
-    borderBottomWidth: 1,
-    borderColor: colors.border,
+    gap: spacing.sm,
   },
-  busInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  routeBadge: {
-    backgroundColor: colors.primary,
-    color: colors.bg,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: radius.sm,
-    fontWeight: '600',
-    marginRight: spacing.md,
-  },
-  destination: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: colors.text,
-  },
-  eta: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: colors.primary,
-    marginTop: 2,
-  },
-  actionButton: {
-    backgroundColor: colors.primaryLight,
+  summaryBlock: {
+    flex: 1,
     padding: spacing.sm,
     borderRadius: radius.sm,
-  },
-  actionText: {
-    color: colors.primary,
-    fontWeight: '500',
-    fontSize: 12,
-  },
-  bottomActions: {
-    padding: spacing.md,
-    backgroundColor: colors.bg,
-    borderTopWidth: 1,
+    backgroundColor: colors.bgLight,
+    borderWidth: 1,
     borderColor: colors.border,
   },
-  actionButtonFull: {
-    backgroundColor: colors.primary,
-    padding: spacing.md,
-    borderRadius: radius.lg,
-    alignItems: 'center',
+  summaryLabel: {
+    ...typography.caption,
+    color: colors.textMuted,
   },
-  actionTextFull: {
-    color: colors.bg,
-    fontWeight: '600',
-    textAlign: 'center',
+  summaryValue: {
+    marginTop: 4,
+    ...typography.cardTitle,
+    color: colors.textDark,
+  },
+  summaryActions: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  etaList: {
+    gap: spacing.sm,
+  },
+  detailCard: {
+    gap: spacing.xs,
+  },
+  detailTitle: {
+    ...typography.sectionHeading,
+    color: colors.textDark,
+  },
+  detailText: {
+    ...typography.body,
+    color: colors.textMuted,
   },
 });

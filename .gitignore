@@ -15,6 +15,11 @@
 # Expo / React Native local state
 transit-track-frontend/.expo/
 .expo-shared/
+transit-track-frontend/.claude/
+
+# Editor and IDE
+.vscode/
+.idea/
 
 # environment files
 .env

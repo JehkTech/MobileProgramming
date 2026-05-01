@@ -3,7 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import HomeScreen from './screens/HomeScreen';
+import MainTabsScreen from './screens/MainTabsScreen';
 import StopDetailScreen from './screens/StopDetailScreen';
 
 const Stack = createStackNavigator();
@@ -17,7 +17,7 @@ export default function App() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home" component={MainTabsScreen} />
           <Stack.Screen name="StopDetail" component={StopDetailScreen} />
         </Stack.Navigator>
         <StatusBar style="auto" />

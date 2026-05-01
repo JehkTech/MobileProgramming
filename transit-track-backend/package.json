@@ -26,7 +26,8 @@
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.20.0",
     "sequelize": "^6.37.8",
-    "sequelize-cli": "^6.6.5"
+    "sequelize-cli": "^6.6.5",
+    "@expo/webpack-config": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
