@@ -7,7 +7,10 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint . --ext .js --ignore-pattern node_modules --ignore-pattern .eslintrc.js",
+    "type-check": "node scripts/type-check.js",
+    "smoke": "node -e \"const fs=require('fs'); const required=['App.js','screens/HomeScreen.js','screens/StopDetailScreen.js','services/api.js']; required.forEach((f)=>{if(!fs.existsSync(f)){throw new Error('Missing '+f);}}); console.log('Frontend smoke check passed');\""
   },
   "dependencies": {
     "@expo/vector-icons": "^15.1.1",
@@ -16,11 +19,17 @@
     "axios": "^1.15.2",
     "expo": "~54.0.33",
     "expo-font": "^55.0.6",
+    "expo-notifications": "~0.32.17",
     "expo-splash-screen": "^55.0.19",
     "expo-status-bar": "~3.0.9",
     "react": "19.1.0",
     "react-native": "0.81.5",
     "react-native-maps": "^1.27.2"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react": "^7.37.5"
+  }
 }

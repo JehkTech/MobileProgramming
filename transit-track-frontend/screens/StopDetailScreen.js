@@ -1,17 +1,35 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { colors, spacing } from '../theme';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { colors, spacing, radius } from '../theme';
+import { requestNotificationPermissions, scheduleStopAlert } from '../services/notifications';
 
-export default function StopDetailScreen({ route }) {
+export default function StopDetailScreen({ navigation, route }) {
+  const stop = route?.params?.stop;
+  const stopName = stop?.name || 'High St / Market';
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+
+  useEffect(() => {
+    requestNotificationPermissions().then(setNotificationsEnabled);
+  }, []);
+
+  const handleAlert = async (minutes) => {
+    if (!notificationsEnabled) {
+      Alert.alert('Notifications disabled', 'Enable notifications in settings');
+      return;
+    }
+    await scheduleStopAlert(stopName, minutes);
+    Alert.alert('Alert set', `You will be notified when bus arrives at ${stopName}`);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
-          <Text style={styles.backButtonText}>←</Text>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backButtonText}>{'< Back'}</Text>
         </TouchableOpacity>
-        <Text style={styles.stopName}>High St / Market</Text>
+        <Text style={styles.stopName}>{stopName}</Text>
       </View>
-      
+
       <View style={styles.busList}>
         <View style={styles.busItem}>
           <View style={styles.busInfo}>
@@ -21,11 +39,14 @@ export default function StopDetailScreen({ route }) {
               <Text style={styles.eta}>3 min</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.actionButton}>
-            <Text style={styles.actionText}>🔔 ALERT</Text>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleAlert(3)}
+          >
+            <Text style={styles.actionText}>ALERT</Text>
           </TouchableOpacity>
         </View>
-        
+
         <View style={styles.busItem}>
           <View style={styles.busInfo}>
             <Text style={styles.routeBadge}>7</Text>
@@ -34,15 +55,18 @@ export default function StopDetailScreen({ route }) {
               <Text style={styles.eta}>11 min</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.actionButton}>
-            <Text style={styles.actionText}>🔔 ALERT</Text>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleAlert(11)}
+          >
+            <Text style={styles.actionText}>ALERT</Text>
           </TouchableOpacity>
         </View>
       </View>
-      
+
       <View style={styles.bottomActions}>
         <TouchableOpacity style={styles.actionButtonFull}>
-          <Text style={styles.actionTextFull}>★ SAVE STOP</Text>
+          <Text style={styles.actionTextFull}>SAVE STOP</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -66,8 +90,9 @@ const styles = StyleSheet.create({
     marginRight: spacing.sm,
   },
   backButtonText: {
-    fontSize: 24,
+    fontSize: 16,
     color: colors.text,
+    fontWeight: '600',
   },
   stopName: {
     flex: 1,
@@ -96,7 +121,7 @@ const styles = StyleSheet.create({
     color: colors.bg,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
-    borderRadius: 4,
+    borderRadius: radius.sm,
     fontWeight: '600',
     marginRight: spacing.md,
   },
@@ -114,7 +139,7 @@ const styles = StyleSheet.create({
   actionButton: {
     backgroundColor: colors.primaryLight,
     padding: spacing.sm,
-    borderRadius: 4,
+    borderRadius: radius.sm,
   },
   actionText: {
     color: colors.primary,

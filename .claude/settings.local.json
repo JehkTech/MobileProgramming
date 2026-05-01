@@ -4,7 +4,9 @@
       "Bash(npm --version)",
       "Bash(npm install:*)",
       "Bash(npx sequelize-cli:*)",
-      "Bash(npm start:*)"
+      "Bash(npm start:*)",
+      "Bash(npm run *)",
+      "Bash(npx expo *)"
     ]
   }
 }

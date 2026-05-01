@@ -1,0 +1,34 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+**/node_modules/
+/.pnp
+.pnp.js
+
+# testing
+**/coverage/
+
+# production
+**/build/
+**/dist/
+
+# Expo / React Native local state
+transit-track-frontend/.expo/
+.expo-shared/
+
+# environment files
+.env
+.env.*
+!.env.example
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+transit-track-backend\migrations

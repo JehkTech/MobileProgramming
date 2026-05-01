@@ -1,14 +1,18 @@
 const express = require('express');
+const stopsRouter = require('./api/stops');
+const authRouter = require('./api/auth');
+
 const router = express.Router();
 
-// Health check route
 router.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-// Basic routes - these will be expanded in later sprints
 router.get('/', (req, res) => {
   res.json({ message: 'TransitTrack API v1' });
 });
+
+router.use('/stops', stopsRouter);
+router.use('/auth', authRouter);
 
 module.exports = router;
