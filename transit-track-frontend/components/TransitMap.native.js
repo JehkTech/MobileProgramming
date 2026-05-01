@@ -2,7 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Pill } from './designSystem';
-import { colors, radius, spacing, typography } from '../theme';
+import { colors, spacing, typography } from '../theme/index.js';
+
+// Define radius locally to avoid import issues
+const radius = {
+  xs: 8,
+  sm: 12,
+  md: 16,
+  lg: 20,
+  xl: 28,
+  pill: 999,
+};
 
 export default function TransitMap({ stops, initialRegion, onStopPress }) {
   return (

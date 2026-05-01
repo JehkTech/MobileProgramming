@@ -1,7 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { colors, spacing, radius, typography } from '../theme';
+import { colors, spacing, typography } from '../theme/index.js';
 import { Pill, EtaCard } from './designSystem';
+
+// Define radius locally to avoid import issues
+const radius = {
+  xs: 8,
+  sm: 12,
+  md: 16,
+  lg: 20,
+  xl: 28,
+  pill: 999,
+};
 
 export default function TransitMap({ stops, initialRegion, onStopPress }) {
   return (

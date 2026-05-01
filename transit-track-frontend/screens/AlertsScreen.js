@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ActionButton, EtaCard, Pill, ScreenScroll, SectionHeader, SurfaceCard } from '../components/designSystem';
-import { colors, spacing, typography } from '../theme';
+import { colors, spacing, radius, typography } from '../theme/index.js';
 
 const alerts = [
   {
