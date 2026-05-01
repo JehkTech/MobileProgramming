@@ -60,6 +60,9 @@ jobs:
       - name: Run migrations
         run: npx sequelize-cli db:migrate --env test
 
+      - name: Seed test data
+        run: npx sequelize-cli db:seed:all --env test
+
       - name: Smoke test
         run: npm run smoke
 
